@@ -1,2 +1,0 @@
-minor_changes:
-  - na_ontap_ems_filter - Added support for rule deletion in REST.

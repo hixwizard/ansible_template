@@ -1,4 +1,0 @@
-interface GigabitEthernet1
-interface GigabitEthernet2
-interface GigabitEthernet3
-interface GigabitEthernet4

@@ -1,3 +1,0 @@
----
-bugfixes:
-  - na_ontap_qtree - Fixed issue with timeout in DELETE operation and added option `rest_timeout` to avoid timeout in GET.

@@ -1,3 +1,0 @@
-l2vpn evpn instance 101 vlan-based
- encapsulation vxlan
- replication-type ingress

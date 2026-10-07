@@ -1,3 +1,0 @@
-snmp-server community communityOvverriden RW acl_uq
-snmp-server location location entry for snmp
-snmp-server packetsize 500
