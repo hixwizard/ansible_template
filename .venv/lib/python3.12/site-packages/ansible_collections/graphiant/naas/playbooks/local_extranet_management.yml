@@ -1,0 +1,126 @@
+---
+# Manage Local Extranet policies (share a LAN segment with other LAN segments across
+# sites/branches within the same enterprise). Unlike Data Exchange (cross-enterprise B2B
+# peering), this is single-tenant — a flat policy resource with no counterpart enterprise
+# involved. After a successful create/update, the policy is automatically pushed to devices
+# (apply) — there is no separate "apply" step.
+#
+# The "update" tag defaults to sample_local_extranet_policies_update.yaml (same policy
+# 'name' as sample_local_extranet_policies.yaml, with a maskLower/maskUpper range restriction
+# added to the source prefixSet entry) — the policy must already exist (created via
+# --tags create) before running --tags update.
+#
+# NOTE: This policy only shares routes between the LAN segments; it does not open traffic
+# between them. A zone-based firewall (security policy) must also be configured between the
+# shared segment and each branch segment to actually permit the extranet traffic — see
+# sample_device_security_policies.yaml / security_policies_management.yml.
+#
+# NOTE: update_policies replaces the full policy, not a merge/patch — the update config file
+# must carry over every field from the create config unchanged, and only the fields you want
+# to change should differ. E.g. to add a new prefix to the prefixSet, list all existing
+# entries plus the new one; omitting an existing entry removes it.
+#
+# Tags:
+#   create — create policies (idempotent; skips existing)
+#   update — update existing policies (full policy is mutable; policy must already exist)
+#   delete — delete policies (idempotent; skips missing)
+#   query  — get policies summary and per-device rollout status (read-only)
+#
+# Example:
+#   ansible-playbook local_extranet_management.yml --tags create
+#   ansible-playbook local_extranet_management.yml --tags create --check --diff
+#   ansible-playbook local_extranet_management.yml --tags update --check --diff
+#   ansible-playbook local_extranet_management.yml --tags delete
+#   ansible-playbook local_extranet_management.yml --tags query
+
+- name: Manage Graphiant Local Extranet Policies
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # graphiant_host: "https://api.graphiant.com"
+    # graphiant_username: "{{ vault_graphiant_username }}"
+    # graphiant_password: "{{ vault_graphiant_password }}"
+
+    # Use YAML anchors to avoid repetition.
+    # Auth: either set GRAPHIANT_ACCESS_TOKEN (e.g. graphiant login; source ~/.graphiant/env.sh)
+    # or set GRAPHIANT_USERNAME / GRAPHIANT_PASSWORD for password login. Token is tried first.
+    graphiant_client_params: &graphiant_client_params
+      host: "{{ graphiant_host | default(lookup('env', 'GRAPHIANT_HOST')) }}"
+      username: "{{ graphiant_username | default(lookup('env', 'GRAPHIANT_USERNAME')) }}"
+      password: "{{ graphiant_password | default(lookup('env', 'GRAPHIANT_PASSWORD')) }}"
+      access_token: "{{ graphiant_access_token | default(lookup('env', 'GRAPHIANT_ACCESS_TOKEN')) }}"
+
+  tasks:
+    - name: Create Local Extranet policies
+      graphiant.naas.graphiant_local_extranet:
+        <<: *graphiant_client_params
+        operation: create_policies
+        config_file: "{{ config_file | default('sample_local_extranet_policies.yaml') }}"
+        detailed_logs: true
+      register: create_policies_result
+      tags: ['create']
+
+    - name: Display policy creation result
+      ansible.builtin.debug:
+        msg: "{{ create_policies_result.msg }}"
+      when: create_policies_result is defined and create_policies_result.msg is defined
+      tags: ['create']
+
+    - name: Update Local Extranet policies
+      graphiant.naas.graphiant_local_extranet:
+        <<: *graphiant_client_params
+        operation: update_policies
+        config_file: "{{ config_file | default('sample_local_extranet_policies_update.yaml') }}"
+        detailed_logs: true
+      register: update_policies_result
+      tags: ['update']
+
+    - name: Display policy update result
+      ansible.builtin.debug:
+        msg: "{{ update_policies_result.msg }}"
+      when: update_policies_result is defined and update_policies_result.msg is defined
+      tags: ['update']
+
+    - name: Delete Local Extranet policies
+      graphiant.naas.graphiant_local_extranet:
+        <<: *graphiant_client_params
+        operation: delete_policies
+        config_file: "{{ config_file | default('sample_local_extranet_policies.yaml') }}"
+        detailed_logs: true
+      register: delete_policies_result
+      tags: ['delete']
+
+    - name: Display policy deletion result
+      ansible.builtin.debug:
+        msg: "{{ delete_policies_result.msg }}"
+      when: delete_policies_result is defined and delete_policies_result.msg is defined
+      tags: ['delete']
+
+    - name: Get Local Extranet policies summary
+      graphiant.naas.graphiant_local_extranet_info:
+        <<: *graphiant_client_params
+        query: policies_summary
+        detailed_logs: true
+      register: policies_summary_result
+      tags: ['query']
+
+    - name: Display policies summary
+      ansible.builtin.debug:
+        msg: "{{ policies_summary_result.msg }}"
+      when: policies_summary_result is defined and policies_summary_result.msg is defined
+      tags: ['query']
+
+    - name: Get device rollout status for a policy
+      graphiant.naas.graphiant_local_extranet_info:
+        <<: *graphiant_client_params
+        query: policy_device_status
+        policy_name: "{{ policy_name | default('local-extranet-policy-1') }}"
+        detailed_logs: true
+      register: device_status_result
+      tags: ['query']
+
+    - name: Display device status
+      ansible.builtin.debug:
+        msg: "{{ device_status_result.msg }}"
+      when: device_status_result is defined and device_status_result.msg is defined
+      tags: ['query']

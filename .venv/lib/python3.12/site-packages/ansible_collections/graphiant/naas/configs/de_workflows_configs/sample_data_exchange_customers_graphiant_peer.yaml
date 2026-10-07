@@ -1,0 +1,25 @@
+# Sample Data Exchange Customer Configuration - Graphiant Customer
+# This file demonstrates a "graphiant_peer" customer — a business that is also on the
+# Graphiant network (see https://docs.graphiant.com/docs/data-exchange). Compare with
+# sample_data_exchange_customers.yaml's "non_graphiant_peer" customer (an unmanaged/
+# third-party edge device, connected via a Site-to-Site VPN Connection instead).
+#
+# "type: graphiant_peer" is what lets accept_invitation confirm this is a Graphiant customer
+# and skip the Site-to-Site VPN Connection entirely — it reads this back via
+# get_matching_customers_for_service as "peer_type" (see
+# sample_data_exchange_acceptance_graphiant_peer_client_to_server.yaml).
+# invite.adminEmails is just this customer's registered contact email — not otherwise used
+# by that check.
+#
+# The system will:
+# 1. Read customer configuration from the 'data_exchange_customers' list
+# 2. Check if customer already exists (idempotent operation)
+# 3. POST to v1/extranet/b2b/customers with the payload
+
+data_exchange_customers:
+  - name: "graphiant-customer-1"
+    type: "graphiant_peer"
+    invite:
+      adminEmails:
+        - "msp_1_test_core_enterprise_1_admin@graphiant.com"
+      maximumNumberOfSites: 2

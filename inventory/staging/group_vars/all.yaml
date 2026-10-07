@@ -1,0 +1,28 @@
+---
+# ===================== Приложение =====================
+
+app_name: my_app_staging
+app_version: "1.0.0"
+
+# Для staging обычно используют поддомен
+domain: staging.example.com
+
+git_repo: https://github.com/your-org/my_app.git
+git_branch: develop
+
+app_port: 3000
+app_http_port: 8081
+
+app_env:
+  NODE_ENV: staging
+  # DATABASE_URL: "..."
+  # SECRET_KEY: "..."
+
+# ===================== SSL (Let's Encrypt) =====================
+# На staging SSL можно отключить — nginx будет работать по HTTP
+ssl_enabled: false
+ssl_email: admin@example.com
+
+# ===================== Система =====================
+
+deploy_user: deploy

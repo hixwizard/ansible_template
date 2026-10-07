@@ -1,18 +1,123 @@
 ---
-- name: Install nginx
-  apt:
-    name: nginx
+- name: Install nginx and certbot
+  ansible.builtin.apt:
+    name:
+      - nginx
+      - certbot
     state: present
 
-- name: Copy nginx config
-  template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/sites-available/{{ app_name }}
-  notify: restart nginx
+- name: Start and enable nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+    enabled: true
 
-- name: Enable site
-  file:
-    src: /etc/nginx/sites-available/{{ app_name }}
-    dest: /etc/nginx/sites-enabled/{{ app_name }}
+- name: Remove default nginx site
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: reload nginx
+
+- name: Create certbot webroot directory
+  ansible.builtin.file:
+    path: "{{ nginx_webroot }}"
+    state: directory
+    mode: "0755"
+
+- name: Stat SSL certificate
+  ansible.builtin.stat:
+    path: "/etc/letsencrypt/live/{{ domain }}/fullchain.pem"
+  register: nginx_cert
+  when: ssl_enabled | bool
+
+- name: Write HTTP site config
+  ansible.builtin.template:
+    src: site-http.conf.j2
+    dest: "/etc/nginx/sites-available/{{ domain }}.conf"
+  notify: reload nginx
+
+- name: Enable HTTP site
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ domain }}.conf"
     state: link
-  notify: restart nginx
+  notify: reload nginx
+
+# Перезагружаем nginx сразу, чтобы webroot был доступен для ACME-челленджа
+- name: Flush handlers to serve ACME challenges
+  ansible.builtin.meta: flush_handlers
+
+- name: Obtain Let's Encrypt certificate
+  ansible.builtin.command: >-
+    certbot certonly --webroot -w {{ nginx_webroot }}
+    -d {{ domain }} --email {{ ssl_email }}
+    --agree-tos --non-interactive --keep-until-expiring
+  when:
+    - ssl_enabled | bool
+    - not (nginx_cert.stat.exists | default(false))
+  notify: reload nginx
+
+- name: Re-stat SSL certificate after issuance
+  ansible.builtin.stat:
+    path: "/etc/letsencrypt/live/{{ domain }}/fullchain.pem"
+  register: nginx_cert
+  when: ssl_enabled | bool
+
+- name: Write HTTPS site config
+  ansible.builtin.template:
+    src: site-ssl.conf.j2
+    dest: "/etc/nginx/sites-available/{{ domain }}-ssl.conf"
+  when:
+    - ssl_enabled | bool
+    - nginx_cert.stat.exists | default(false)
+  notify: reload nginx
+
+- name: Enable HTTPS site
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ domain }}-ssl.conf"
+    dest: "/etc/nginx/sites-enabled/{{ domain }}-ssl.conf"
+    state: link
+  when:
+    - ssl_enabled | bool
+    - nginx_cert.stat.exists | default(false)
+  notify: reload nginx
+
+- name: Disable HTTPS site when SSL is disabled
+  ansible.builtin.file:
+    path: "/etc/nginx/sites-enabled/{{ domain }}-ssl.conf"
+    state: absent
+  when: not (ssl_enabled | bool)
+  notify: reload nginx
+
+# После выпуска сертификата переписываем HTTP-конфиг на редирект
+- name: Rewrite HTTP config to redirect mode
+  ansible.builtin.template:
+    src: site-http.conf.j2
+    dest: "/etc/nginx/sites-available/{{ domain }}.conf"
+  when:
+    - ssl_enabled | bool
+    - nginx_cert.stat.exists | default(false)
+  notify: reload nginx
+
+# --- Авто-продление сертификатов ---
+
+- name: Ensure certbot renewal hooks directory
+  ansible.builtin.file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+    mode: "0755"
+  when: ssl_enabled | bool
+
+- name: Install nginx reload hook for certbot renewals
+  ansible.builtin.template:
+    src: renew-hook.sh.j2
+    dest: /etc/letsencrypt/renewal-hooks/deploy/20-reload-nginx.sh
+    mode: "0755"
+  when: ssl_enabled | bool
+
+- name: Enable certbot auto-renewal timer
+  ansible.builtin.systemd:
+    name: certbot.timer
+    state: started
+    enabled: true
+  when: ssl_enabled | bool

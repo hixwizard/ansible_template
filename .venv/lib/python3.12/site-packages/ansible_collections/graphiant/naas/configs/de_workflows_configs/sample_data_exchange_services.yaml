@@ -1,0 +1,33 @@
+# Sample Data Exchange Services Configuration
+# This file demonstrates how to configure Data Exchange services (Peer to Peer)
+#
+# The system will:
+# 1. Read service configuration from the 'data_exchange_services' list
+# 2. Resolve LAN segment names to IDs
+# 3. Resolve site names to site IDs
+# 4. Resolve device names to device IDs in policy.globalObjectOps (for attaching optional Graphiant filters)
+# 5. POST to v1/extranet/b2b/producer with the payload
+
+data_exchange_services:
+  - serviceName: "de-service-1"
+    serviceType: "peering_service"  # alias: type
+    policy:
+      serviceLanSegment: "lan-segment-3"  # Will be resolved to ID
+      sites:
+        - sites: ["San Jose-sdktest", "New York-sdktest"]  # Will be resolved to IDs
+          siteLists: []
+      description: "de_service_1_description"
+      prefixTags:
+        - prefix: "10.1.1.0/24"
+          tag: "s-1-prefix1"
+
+      globalObjectOps: # Optional: attach Graphiant filters to specific devices
+        "edge-1-sdktest":   # Device name will be resolved to device ID
+          routingPolicyOps:
+            "Policy-Edge1-Primary": "Attach"
+        "edge-2-sdktest":   # Device name will be resolved to device ID
+          routingPolicyOps:
+            "Policy-Edge2-Primary": "Attach"
+        "edge-3-sdktest":   # Device name will be resolved to device ID
+          routingPolicyOps:
+            "Policy-Edge3-Primary": "Attach"

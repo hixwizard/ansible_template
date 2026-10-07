@@ -1,0 +1,144 @@
+---
+azure.azcollection.*:
+  query: >-
+    (
+      {"apimanagement": "Metadata",
+       "authorization": "Governance & Operations",
+       "automation": "Governance & Operations",
+       "batch": "Event Generation",
+       "cache": "Database",
+       "cdn": "Networking",
+       "classiccompute": "Compute",
+       "compute": "Compute",
+       "containerinstance": "Compute",
+       "containerregistry": "DevOps",
+       "containerservice": "Compute",
+       "datafactory": "Storage",
+       "dbformariadb": "Database",
+       "dbformysql": "Database",
+       "dbforpostgresql": "Database",
+       "devices": "Hybrid/Edge Cloud Components",
+       "documentdb": "Database",
+       "eventhub": "Data Processing & Analytics",
+       "hdinsight": "Data Processing & Analytics",
+       "insights": "Data Processing & Analytics",
+       "keyvault": "Database",
+       "maintenance": "Governance & Operations",
+       "machinelearningservices": "Machine Learning Services",
+       "managedidentity": "Governance & Operations",
+       "managedservices": "Governance & Operations",
+       "management": "Governance & Operations",
+       "network": "Networking",
+       "operationalinsights": "Data Processing & Analytics",
+       "recoveryservices": "Storage",
+       "redhatopenshift": "Compute",
+       "resources": "UNKNOWN",
+       "servicebus": "App Integration & Messaging",
+       "sql": "Database",
+       "storage": "Storage",
+       "web": "App Integration & Messaging"
+      } as $mapping |
+      (.accounts //
+       .aks_agent_pools //
+       .ansible_facts.azure_vm //
+       .ansible_facts.azure_vmss //
+       .bastion_host //
+       .clusters //
+       .connection //
+       .containerinstances //
+       .database //
+       .databases //
+       .deployment //
+       .deployments //
+       .elastic_pool //
+       .firewall_policy //
+       .firewall_rule //
+       .firewallpolicies //
+       .firewalls //
+       .gateways //
+       .instances //
+       .ip_security_restrictions //
+       .keyvaults //
+       .link_service //
+       .loadbalancers //
+       .long_term_retention_policy //
+       .ml_batch_deployments //
+       .ml_batch_deployment //
+       .ml_batch_endpoints //
+       .ml_batch_endpoint_invoke //
+       .ml_batch_endpoint //
+       .ml_components //
+       .ml_component //
+       .ml_computes //
+       .ml_compute //
+       .ml_connections //
+       .ml_connection //
+       .ml_data_assets //
+       .ml_data_asset //
+       .ml_datastore //
+       .ml_datastores //
+       .ml_environments //
+       .ml_environment //
+       .ml_jobs //
+       .ml_job //
+       .ml_models //
+       .ml_model //
+       .ml_online_deployments //
+       .ml_online_deployment //
+       .ml_online_endpoints //
+       .ml_online_endpoint_invoke //
+       .ml_online_endpoint //
+       .ml_registries //
+       .ml_registry //
+       .ml_schedules //
+       .ml_schedule //
+       .ml_workspaces //
+       .ml_workspace //
+       .networkinterfaces //
+       .publicipaddresses //
+       .rediscaches //
+       .registries //
+       .resourcegroups //
+       .response //
+       .rules //
+       .securitygroups //
+       .servers //
+       .servicebuses //
+       .short_term_retention_policy //
+       .state //
+       .storageaccounts //
+       .subnets //
+       .virtual_hubs //
+       .virtualnetworks //
+       .vms //
+       .vpn_sites //
+       .webapps //
+       .) |
+      (if type=="array" then .[]
+        else if type=="object" then .
+              else empty end
+       end
+       ) as $data |
+        (
+          ($data.id | capture("/providers/[Mm]icrosoft.(?<resourcetype>[^/]+)/")? | .resourcetype)
+            | ascii_downcase
+        ) as $node_type |
+        (
+          ($data.id | capture("/providers/[Mm]icrosoft.[^/]+/(?<subtype>[^/]+)/")? | .subtype)
+            | ascii_downcase
+        ) as $sub_node_type |
+        select($data.id != null) |
+        {
+          name: $data.id,
+          canonical_facts: {
+            name: ($data.name // "UNKNOWN"),
+            id: $data.id,
+            node_type: $node_type
+          },
+          facts: {
+            infra_type: "PublicCloud",
+            infra_bucket: ($mapping[$node_type] // "UNKNOWN"),
+            device_type: $sub_node_type
+          }
+        }
+    )

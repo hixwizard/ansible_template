@@ -1,0 +1,17 @@
+---
+# Пользователь, под которым будут выполняться деплои
+deploy_user: deploy
+
+# Локальный публичный SSH-ключ, который будет установлен на сервер
+# для пользователя deploy (достаточно один раз выполнить make setup)
+local_ssh_public_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
+
+# Базовые пакеты
+common_packages:
+  - curl
+  - git
+  - htop
+  - ufw
+  - ca-certificates
+  - gnupg
+  - software-properties-common

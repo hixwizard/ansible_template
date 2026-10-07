@@ -1,8 +1,14 @@
 ---
-- name: Deploy application
+# Деплой приложения. Полностью автоматический и идемпотентный:
+#   1) app   — обновление кода из git, запись .env, запуск контейнеров (docker compose)
+#   2) nginx — конфигурация сайта, выпуск/обновление SSL-сертификата Let's Encrypt
+#
+# Запуск:
+#   make deploy
+#   make deploy ENV=staging
+- name: Деплой приложения
   hosts: app
-  become: yes
+  become: true
   roles:
+    - role: app
     - role: nginx
-    - role: nodejs
-    - role: postgresql

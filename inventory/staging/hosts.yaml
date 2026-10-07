@@ -1,0 +1,12 @@
+---
+all:
+  children:
+    web:
+      hosts:
+        web1:
+          # TODO: замените на реальный IP/DNS вашего сервера
+          ansible_host: 203.0.113.20
+          ansible_user: deploy
+    app:
+      children:
+        web:

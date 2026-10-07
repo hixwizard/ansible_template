@@ -1,0 +1,128 @@
+---
+# Manage gateway Public VIF ("local data exchange") services — expose a producer LAN segment
+# (VRF) on Graphiant-managed gateway appliances, in a chosen region/storage provider, to one
+# or more consumer LAN segments. Unlike Local Extranet/Data Exchange, there is no separate
+# apply/rollout step — the gateway appliances host the service directly once created.
+#
+# NOTE: update_services is a full PUT replace, NOT a merge/patch — the update config file
+# must contain the COMPLETE desired configuration for the service; any field or
+# gatewayBgpNeighbors/consumerLanSegments/natPrefixStrategy entry omitted from it is removed.
+# It also does not compare against live service state before pushing and always reports
+# changed=true — see the graphiant_public_vif module documentation and
+# sample_public_vif_services_update.yaml.
+#
+# Tags:
+#   create — create services (idempotent; skips existing)
+#   update — update existing services (full service is mutable; service must already exist)
+#   delete — delete services (idempotent; skips missing)
+#   query  — get services summary and per-service details (read-only)
+#
+# Example:
+#   ansible-playbook public_vif_management.yml --tags create
+#   ansible-playbook public_vif_management.yml --tags create --check --diff
+#   ansible-playbook public_vif_management.yml --tags update --check --diff
+#   ansible-playbook public_vif_management.yml --tags delete
+#   ansible-playbook public_vif_management.yml --tags query
+
+- name: Manage Graphiant Public VIF Services
+  hosts: localhost
+  gather_facts: false
+  vars:
+    vault_secrets_path: "{{ playbook_dir }}/../configs/vault_secrets.yml"
+    vault_public_vif_bgp_md5_passwords: {}
+    # graphiant_host: "https://api.graphiant.com"
+    # graphiant_username: "{{ vault_graphiant_username }}"
+    # graphiant_password: "{{ vault_graphiant_password }}"
+
+    # Use YAML anchors to avoid repetition.
+    # Auth: either set GRAPHIANT_ACCESS_TOKEN (e.g. graphiant login; source ~/.graphiant/env.sh)
+    # or set GRAPHIANT_USERNAME / GRAPHIANT_PASSWORD for password login. Token is tried first.
+    graphiant_client_params: &graphiant_client_params
+      host: "{{ graphiant_host | default(lookup('env', 'GRAPHIANT_HOST')) }}"
+      username: "{{ graphiant_username | default(lookup('env', 'GRAPHIANT_USERNAME')) }}"
+      password: "{{ graphiant_password | default(lookup('env', 'GRAPHIANT_PASSWORD')) }}"
+      access_token: "{{ graphiant_access_token | default(lookup('env', 'GRAPHIANT_ACCESS_TOKEN')) }}"
+
+  tasks:
+    - name: Load vault secrets for Public VIF BGP MD5 passwords (skipped if vault file absent)
+      ansible.builtin.include_vars:
+        file: "{{ vault_secrets_path }}"
+      no_log: true
+      when: vault_secrets_path is file
+      tags: ['create', 'update']
+
+    - name: Create Public VIF services
+      graphiant.naas.graphiant_public_vif:
+        <<: *graphiant_client_params
+        operation: create_services
+        config_file: "{{ config_file | default('sample_public_vif_services.yaml') }}"
+        vault_public_vif_bgp_md5_passwords: "{{ vault_public_vif_bgp_md5_passwords | default({}) }}"
+        detailed_logs: true
+      register: create_services_result
+      tags: ['create']
+
+    - name: Display service creation result
+      ansible.builtin.debug:
+        msg: "{{ create_services_result.msg }}"
+      when: create_services_result is defined and create_services_result.msg is defined
+      tags: ['create']
+
+    - name: Update Public VIF services
+      graphiant.naas.graphiant_public_vif:
+        <<: *graphiant_client_params
+        operation: update_services
+        config_file: "{{ config_file | default('sample_public_vif_services_update.yaml') }}"
+        vault_public_vif_bgp_md5_passwords: "{{ vault_public_vif_bgp_md5_passwords | default({}) }}"
+        detailed_logs: true
+      register: update_services_result
+      tags: ['update']
+
+    - name: Display service update result
+      ansible.builtin.debug:
+        msg: "{{ update_services_result.msg }}"
+      when: update_services_result is defined and update_services_result.msg is defined
+      tags: ['update']
+
+    - name: Delete Public VIF services
+      graphiant.naas.graphiant_public_vif:
+        <<: *graphiant_client_params
+        operation: delete_services
+        config_file: "{{ config_file | default('sample_public_vif_services.yaml') }}"
+        detailed_logs: true
+      register: delete_services_result
+      tags: ['delete']
+
+    - name: Display service deletion result
+      ansible.builtin.debug:
+        msg: "{{ delete_services_result.msg }}"
+      when: delete_services_result is defined and delete_services_result.msg is defined
+      tags: ['delete']
+
+    - name: Get Public VIF services summary
+      graphiant.naas.graphiant_public_vif_info:
+        <<: *graphiant_client_params
+        query: services_summary
+        detailed_logs: true
+      register: services_summary_result
+      tags: ['query']
+
+    - name: Display services summary
+      ansible.builtin.debug:
+        msg: "{{ services_summary_result.msg }}"
+      when: services_summary_result is defined and services_summary_result.msg is defined
+      tags: ['query']
+
+    - name: Get details for a Public VIF service
+      graphiant.naas.graphiant_public_vif_info:
+        <<: *graphiant_client_params
+        query: service_details
+        service_name: "{{ service_name | default('pvif-service-1') }}"
+        detailed_logs: true
+      register: service_details_result
+      tags: ['query']
+
+    - name: Display service details
+      ansible.builtin.debug:
+        msg: "{{ service_details_result.result_data }}"
+      when: service_details_result is defined
+      tags: ['query']

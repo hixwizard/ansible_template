@@ -1,21 +1,16 @@
 ---
-- name: Initial server setup
+# Первичная настройка сервера: базовые пакеты, пользователь deploy,
+# SSH-ключ, файрвол (UFW) и установка Docker.
+#
+# Запуск (первый раз под root):
+#   make setup SSH_USER=root
+# или:
+#   ansible-playbook -i inventory/production/hosts.yaml -u root playbooks/setup.yaml
+#
+# Плейбук идемпотентен — безопасно перезапускать.
+- name: Первичная настройка сервера
   hosts: all
-  become: yes
-  tasks:
-
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-
-    - name: Install common packages
-      apt:
-        name: ['curl', 'git', 'vim', 'htop']
-        state: present
-
-    - name: Create deploy user
-      user:
-        name: deploy
-        groups: sudo
-        shell: /bin/bash
-        create_home: yes
+  become: true
+  roles:
+    - role: common
+    - role: docker

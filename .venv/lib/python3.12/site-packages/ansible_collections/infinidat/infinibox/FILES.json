@@ -1,0 +1,565 @@
+{
+ "files": [
+  {
+   "name": ".",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "ci",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "ci/Dockerfile",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "86581cc9a45f36e566bc8608dbaa210881871e2efc0249083cb15afbb397c6f6",
+   "format": 1
+  },
+  {
+   "name": "requirements.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "23e472fe3be9bc35eaf6ce47860761043bc52a8e387f164c4b00b5db36e7838a",
+   "format": 1
+  },
+  {
+   "name": "README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "73737f9d2a9715c4d2ecfa88b24127473ed286d24e760e3f639b6e576b4e182f",
+   "format": 1
+  },
+  {
+   "name": "tests",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "tests/hacking",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "tests/hacking/infini_vol_present_example.json",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "23e4089f3d750800a7c782a3d579a53f298d366f0b1f84431a02414c12b81160",
+   "format": 1
+  },
+  {
+   "name": "tests/config.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "9a009a349eaaf78c93ff56072d2ef171937bdb884e4976592ab5aaa9c68e1044",
+   "format": 1
+  },
+  {
+   "name": "LICENSE",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e77edcc69dd86480e3392a71e6be429cb9576ed59e49bbb2e9dac4a44b28068f",
+   "format": 1
+  },
+  {
+   "name": ".gitignore",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "82387c6355c2e3585f95c5e019c5814b59f3f872f0ea72badc853e0800b91e03",
+   "format": 1
+  },
+  {
+   "name": "CHANGELOG.rst",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "89e9ff678ed7b3ba0dc688665a92ca6cc83bdc2b1ec55f2e912fd9ecdf755a7c",
+   "format": 1
+  },
+  {
+   "name": "README-DEV.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "ee55b32e36231daee83df5e68bdc74c26e8b5e07b4b64ebb5f3f55286c089984",
+   "format": 1
+  },
+  {
+   "name": ".gitlab-ci.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "151b556a18b7e46456fa8ed52d5e6ded2bd400b4e56e58eb67c4f815a25d9028",
+   "format": 1
+  },
+  {
+   "name": "meta",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "meta/execution-environment.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8b03e59e1cf4341741306b8d290961e3295a92e7810c0028bb401f2ae1eca745",
+   "format": 1
+  },
+  {
+   "name": "meta/runtime.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "584a133b561af5532da591a150372d272c697792d85a72d9c70e5f5ceec34902",
+   "format": 1
+  },
+  {
+   "name": "requirements-dev.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "0b20acb10767f9781a25a0c094c4cf686b490aa928d09643e1d29db4be667885",
+   "format": 1
+  },
+  {
+   "name": "docs",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "docs/certification",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "docs/certification/setuptools-exception.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "eceac5a69b5eb3591f55bcb522cb862f4c7b1f5f0c6781d8c766137553b93975",
+   "format": 1
+  },
+  {
+   "name": "docs/DEV_README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8839b87ce2d87efc8e1d422febd3c91c591e0a4e29b9d970b48724f361a53a4f",
+   "format": 1
+  },
+  {
+   "name": "playbooks",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_create_network_spaces.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1535c4029ab50a492deb5ccc5844f8db925943edea36dd8596928831fafb8141",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_create_metadata.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1059126c26f8e359c5532524202b52d19c33bc09d2f263b2630f710915a1eb86",
+   "format": 1
+  },
+  {
+   "name": "playbooks/infinisafe_demo_runtest.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e082c88681f4080a3be10a9e3a30dc9bfd4f3f303b5eec573a4e2da6268561a7",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_create_volumes.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "7e1da86de6b914946140f28ffc7235418ca4817ac6a0f40a601b4d81d8bf53bc",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_create_map_cluster.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "09ccf475f6692eb69732ed4f211e7f2ad9a99e54fe138ccaf8ceabff5ca88ac2",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_network_spaces.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "93c179b4918a5aa94e23f83206f9cf891851e10beb212b05b715a31efab90f8d",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_volumes.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "728a42b2e20165389e133398db73e4d648390a63f2cbce79d75a94ecdb4fc25a",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_search_metadata.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8f7bb975ef5c04709fe56b977ef728dcc21e8e473a56ea2f93f01a388f1aacd9",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_create_resources.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "94654b2f7672f756cdcd5af0396be6370ff4f99ac9fc7e0bd0db3928699b7567",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_persist_api_session.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "7ff403192cac6f78ea85d0894e46ea404496f432eee0f9c2b61c4fb98d1c5802",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_notification_rules_sample.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "3dc6ba9c5ca2870b1f6be35225c251d30c6cf748576bf5d01f03078c1f2481c1",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_metadata.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "893dffb4ea899a0fec1c3ebbe5a08c4f6d7ddfb78002ef79870a9eb219ea4a39",
+   "format": 1
+  },
+  {
+   "name": "playbooks/configure_array.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "d7c58670abe4bb2053a80fbca81e85f563e6daf41d6601e18b5a0735c38f911b",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_resources.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "f87e839f7f19c9b3cd5c54366f1d6cf5bc210bd5726a8d691159b9b8dbc79286",
+   "format": 1
+  },
+  {
+   "name": "playbooks/infinisafe_demo_teardown.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8be2494710a5ea4fd7735cfe0ef52d8e9fd721a5a8d7a7e660f10040a88306c2",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_resources_demo.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "558978dfd6997a9c13e3a5af2ec74f5ee96c362a57803feb22f57438f5e685de",
+   "format": 1
+  },
+  {
+   "name": "playbooks/ansible.cfg",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6946120d2926bdde34018f3507e119c2e5f7d08e74ab25fe42e9ab61c7d07e62",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_create_resources_demo.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1ef72f653486c620e921fc2b5d5060e0a735d4012177113b48cf70705cc89bd9",
+   "format": 1
+  },
+  {
+   "name": "playbooks/inventory",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "f164a40b003a7fde993412caeff0d770199a1c3ee0cdc6c68735812c192766de",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_create_snapshots.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8a3eecfb7b5badf77d674766b8366fe8846b9a11531e63044de07858a93cf64b",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_config_sample.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "313404d41862db332f3a71a1c8092f25c581890cba992b131a7fe0a79a21b138",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_users_repository.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "4c98c2caa0f8720d5d08ac7362e1794dc2be3191b2e15d421183b1cc3bd77afb",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_snapshots.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "173991de0060fe4ff62aed19e9eb638a640e4f52032e68534b69ad0cefbd0270",
+   "format": 1
+  },
+  {
+   "name": "playbooks/test_remove_map_cluster.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "a3634e90f75e0bd7b430298fc03451754d13944d68204a98682879d2b78f5ca3",
+   "format": 1
+  },
+  {
+   "name": "playbooks/infinisafe_demo_setup.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "3d4a1ac66d47a7ff4a27c28da52d5eb325fa094c9906e7464fbd24169580c970",
+   "format": 1
+  },
+  {
+   "name": "bindep.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "ffebad596800734a87e61fb03f00816841394329af1fef213a4e841f457a6cd3",
+   "format": 1
+  },
+  {
+   "name": "plugins",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/modules",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_config.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "b1f1fd399da6508c04d316abb3ef68528b886e24079eaaa8d17adb64e9478f13",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_certificate.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "61d0e4c27e20f4d243dafd43b527184ea3e502d30b94d6026e60f514c038f1a7",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_map.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1b7facd054d6965f67fc0ac723db0d282b2edf493aa7a0238aef38c9934d6a74",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_cluster.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "cff08f680199863e095fae1c890cc17b65e15d263c1b84da859c170bb6c8cb82",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_fs.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "b107fd822d1a2347e3f1f8ef38445f4dda191661accb989254d807bf476e9e16",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_network_space.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "ae0362e206645d3ab06a9f5fc6b3769fd70f1004148feaf4ec0eba581c94a581",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/__init__.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_notification_target.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "d545f6a59abdcf7947f9a07b437bd1d4cecd19f4563e42348c2ed6a4dd2e4d68",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_metadata.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1a4848ef065c7c0b626b3391d20d3938ac1d96166793e73fe171e7ae6fff8854",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_export.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "5c207376a0995ba10858877af5076565dda8f9d5430a53222f178bf58a8dfb6c",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_export_client.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8f82c0187d8be212f2da1590a1f1c5ca3ff0f508d6c7338405b618a86d1770a1",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_host.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "96453b44cad54dcd36760356577b03cf63b436543612d36fe2340cd148044143",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_port.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "09ed2ba4508b91df5c8a15d694463e8ea87615acd21e362ae1219b6e4bc1492f",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_event.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "75124ec3c537c9e4db4e8bf97777ba2396939c264c73a9f8d1b10deb00b5d23a",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_notification_rule.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "db9a81d5adaf9ccae5a0454d651bf913c5ff361255922b9c22f6a17e990984fe",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_user.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "08f51eb7d0e643002fc713857d70b8ed2942f94d87d91d4e953171c0b62ca358",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_fibre_channel_switch.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "3d651158ae13d2f0f6a93fcb3c0af5aa283112dc630f45d8c28fcd8dbb04f331",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_sso.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "cbb5879bb0874d71dbf648f13c5a11c5767356cddd29c1239898b38141f4a3b4",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_infinimetrics.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "796d89893669dc1dd3ee32d9834bf57b9b41aaa04c8dfca2b64958fbd7e9abfd",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_vol.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "951f01f185d9176cfa4e4052ea41708cec30d3b6fc5f308da11d2c0815a5fc9d",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_users_repository.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "bdd2b320b2da411ca81e79f94976856c94bc8e25cce439808119d72ef0764547",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/infini_pool.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "9e1aee3951197de002baab7333f96141debcca4db25a0f7f686b0c2203be24e1",
+   "format": 1
+  },
+  {
+   "name": "plugins/doc_fragments",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/doc_fragments/infinibox.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "4d61eaaec4e9210f498596eddab5e8b66f5c4a1352665d462d0ec9e647b0598a",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/infinibox.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "f00547d02d8792a74cb53e7bcbeebd988241c2727c8be8252c7045375e5ee138",
+   "format": 1
+  },
+  {
+   "name": "plugins/filter",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/filter/delta_time.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8d8fd570aa879ec7e5436d9981eb561e8fea5b30d12def6767043b0a25909506",
+   "format": 1
+  },
+  {
+   "name": "plugins/filter/psus_filters.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1320aad99ff8d66af7181faf2c57682bf281a717616e645e018c558b709a8c06",
+   "format": 1
+  }
+ ],
+ "format": 1
+}

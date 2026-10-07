@@ -1,0 +1,73 @@
+# Sample Public VIF Services Update Configuration
+# NOTE: update_services (PUT) REPLACES THE ENTIRE EXISTING SERVICE CONFIGURATION — it is a
+# full overwrite, not a merge/patch. This file must contain the COMPLETE desired
+# configuration for the service: any field, or any gatewayBgpNeighbors/consumerLanSegments/
+# natPrefixStrategy entry, that exists on the service today but is NOT included here will be
+# removed. Always carry over every entry you want to keep unchanged from your create (or
+# previous update) config, and only add/change what you actually intend to update — e.g. to
+# add a second neighbor as shown below, list the existing neighbor plus the new one; omitting
+# the existing neighbor would delete it.
+#
+# There is also no live-state diff for this operation: every run pushes this full payload and
+# reports changed: true regardless of whether anything actually changed — see the
+# graphiant_public_vif module documentation.
+
+public_vif_services:
+  - serviceName: "pvif-service-1" # Must match the existing service's name exactly.
+    lanSegment: "Karen"
+    region: "us-central-1 (Chicago)"
+    storageProvider: "AWS"
+    coveringPrefixes:
+      - "6.6.6.0/24"
+
+    gatewayBgpNeighbors:
+      "gateway-1":
+        peerAsn: 65001
+        remoteAddress: "5.5.5.2"
+        localAddress: "3.3.3.1"
+        # Must be a subinterface (e.g. "GigabitEthernet6/0/0.100") — a main interface (e.g.
+        # "GigabitEthernet6/0/0") is not valid here.
+        localInterface: "GigabitEthernet6/0/0.100"
+        addressFamilies:
+          ipv4:
+            inboundPolicy: "Set_Pref_Community_120"
+        allowAsIn: 1 
+        asOverride: true
+        removePrivateAs: true
+        holdTimerValue: 90
+        keepaliveTimerValue: 30
+        multiHop: 1
+        md5Password: "secretWord"
+        sendCommunity: true
+        maxPrefixValue: 1000
+      "gateway-2":
+        peerAsn: 65002
+        remoteAddress: "5.5.5.3"
+        localAddress: "3.3.3.2"
+        localInterface: "GigabitEthernet6/0/0.100"
+        # updating config for gateway-2
+        addressFamilies:
+          ipv4:
+            inboundPolicy: "Set_Pref_Community_120"
+        allowAsIn: 1 
+        asOverride: true
+        removePrivateAs: true
+        holdTimerValue: 90
+        keepaliveTimerValue: 30
+        multiHop: 1
+        md5Password: "secretWord"
+        sendCommunity: true
+        maxPrefixValue: 1000
+
+    natPrefixStrategy:
+      "gateway-1": "198.168.2.0/24"
+      "gateway-2": "198.168.1.0/24"
+
+    consumerLanSegments:
+      "lan-7-test": 
+        consumerPrefixes:
+          - "1.1.1.0/24"
+
+    advertisement:
+      sites:
+        - "New York-sdktest"

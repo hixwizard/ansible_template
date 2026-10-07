@@ -1,0 +1,14 @@
+---
+# Архитектура (для строки репозитория Docker)
+docker_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+
+# Путь к ключу подписи репозитория Docker
+docker_apt_keyring: /etc/apt/keyrings/docker.asc
+
+# Пакеты Docker (включая compose plugin v2)
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin

@@ -1,0 +1,40 @@
+---
+# Sample Data Exchange Service Acceptance Configuration - Client to Server, Graphiant Customer
+# Used in Workflow 4: Data Exchange - Accept Invitation. Run in the MAIN tenant (the
+# customer's own tenant) to accept "de-service-graphiant-peer-c2s", published by the proxy
+# tenant and matched to "graphiant-customer-1" — see
+# sample_data_exchange_customers_graphiant_peer.yaml,
+# sample_data_exchange_services_graphiant_peer_client_to_server.yaml, and
+# sample_data_exchange_matches_graphiant_peer_client_to_server.yaml.
+#
+# Per the Data Exchange customer types (https://docs.graphiant.com/docs/data-exchange): a
+# Graphiant customer is already on the Graphiant network and needs no Site-to-Site VPN
+# Connection — unlike a Non-Graphiant customer (see sample_data_exchange_acceptance_client_
+# to_server.yaml), which requires policy.siteToSiteVpn with a vpnProfile. This file omits
+# policy.siteToSiteVpn ENTIRELY (not even as an empty {}) — accept_invitation confirms this
+# customer's peer_type is "graphiant_peer" (matching how it was created — see
+# sample_data_exchange_customers_graphiant_peer.yaml's "type") and proceeds without it.
+#
+# consumerLanSegments/consumerPrefixes here is the main tenant's own LAN segment
+# ("lan-segment-3", the same one used to create "de-service-1" and "de-partner-to-org-
+# service-1") advertising the covering block for the reversed prefixes used throughout this
+# example set (see the paired files' header comments for the full reversal).
+
+data_exchange_acceptances:
+  - customerName: "graphiant-customer-1"          # Resolved to customer ID via Data Exchange customers API
+    serviceName: "de-service-graphiant-peer-c2s"   # Resolved to service ID and match ID via matches file
+
+    policy:
+      # Site Information — where this service is terminated (by name, resolved to ID)
+      sites:
+        - sites: ["San Jose-sdktest", "New York-sdktest"]   # One or more site names
+          siteLists: []                 # Optional: site list names (empty = direct site selection)
+
+      # No "siteToSiteVpn" key here at all — see header comment above. No "natTranslationMode"
+      # either — client_to_server services have no per-acceptance NAT translation.
+
+      # LAN segments and the consumer prefixes advertised into each segment
+      consumerLanSegments:
+        - lanSegment: "lan-segment-3"   # LAN segment name (resolved to segment ID)
+          consumerPrefixes:
+            - "10.48.52.152/30"          # Consumer's own prefixes advertised

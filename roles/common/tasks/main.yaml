@@ -1,0 +1,67 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install common packages
+  ansible.builtin.apt:
+    name: "{{ common_packages }}"
+    state: present
+
+- name: Create deploy user
+  ansible.builtin.user:
+    name: "{{ deploy_user }}"
+    groups: sudo
+    shell: /bin/bash
+    create_home: true
+    append: true
+
+- name: Allow deploy user passwordless sudo
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/90-{{ deploy_user }}"
+    content: "{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL\n"
+    mode: "0440"
+    validate: "visudo -cf %s"
+
+- name: Ensure .ssh directory for deploy user
+  ansible.builtin.file:
+    path: "/home/{{ deploy_user }}/.ssh"
+    state: directory
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0700"
+
+- name: Install local SSH public key for deploy user
+  ansible.builtin.copy:
+    dest: "/home/{{ deploy_user }}/.ssh/authorized_keys"
+    content: "{{ lookup('file', local_ssh_public_key) }}\n"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0600"
+
+# --- Файрвол (UFW) ---
+
+- name: Allow SSH (22/tcp)
+  community.general.ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+
+- name: Allow HTTP (80/tcp)
+  community.general.ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+
+- name: Allow HTTPS (443/tcp)
+  community.general.ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+
+- name: Enable UFW with default deny incoming
+  community.general.ufw:
+    state: enabled
+    policy: deny
+    direction: incoming

@@ -1,0 +1,35 @@
+---
+- name: Ensure application directory exists
+  ansible.builtin.file:
+    path: "{{ app_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Clone or update application repository
+  ansible.builtin.git:
+    repo: "{{ git_repo }}"
+    dest: "{{ app_dir }}"
+    version: "{{ git_branch }}"
+    force: true
+    accept_newhostkey: true
+  when: git_repo | length > 0
+
+- name: Write .env file
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ app_dir }}/.env"
+    mode: "0600"
+  when: app_env | length > 0
+
+- name: Write docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ app_dir }}/docker-compose.yml"
+
+- name: Build and start containers
+  ansible.builtin.command: docker compose up -d --build --remove-orphans
+  args:
+    chdir: "{{ app_dir }}"
+  register: compose_result
+  changed_when: >-
+    compose_result.stdout | regex_search('(Started|Created|Recreated|Built|Running)') | default('') != ''

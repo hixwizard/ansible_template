@@ -1,0 +1,11 @@
+---
+# Параметры SSL (переопределяются в group_vars окружения)
+ssl_enabled: false
+ssl_email: "admin@{{ domain }}"
+
+# Каталог для ACME-челленджей certbot (webroot-метод)
+nginx_webroot: /var/www/certbot
+
+nginx_http_port: 80
+nginx_https_port: 443
+nginx_server_tokens: "off"

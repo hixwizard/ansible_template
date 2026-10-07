@@ -1,0 +1,63 @@
+# Sample Local Extranet Policies Configuration
+# This file demonstrates how to configure Local Extranet policies
+#
+# Local Extranet shares a LAN segment (VRF) with one or more other LAN segments across
+# sites/branches within the SAME enterprise — unlike Data Exchange, there is no
+# producer/customer/match/invitation workflow, just a single policy resource.
+#
+# 'sharedSegment' is the LAN segment being shared, and 'targetSegments' are the LAN segments
+# allowed to consume it. 'source' scopes the shared segment side (sites, prefixSet,
+# excludedDevices) and 'branches' scopes the consuming side (sites, excludedDevices).
+#
+# The system will:
+# 1. Read policy configuration from the 'local_extranet_policies' list
+# 2. Resolve sharedSegment/targetSegments LAN segment names to IDs
+# 3. Resolve source/branches site names and excludedDevices device names to IDs
+# 4. POST to v1/extranets with the payload ('type' is always sent as "2" — not user-configurable)
+# 5. Automatically push the policy to devices (apply) — no separate apply step needed
+#
+# Optional "targetDevices" (device names) controls which devices the policy is pushed to
+# on apply; when omitted, the API applies the policy to all applicable devices.
+#
+# See sample_local_extranet_policies_update.yaml for update_policies (the policy must already
+# exist — created via create_policies with this file). Unlike Data Exchange, the full policy
+# is mutable here, not just a single field.
+#
+# NOTE: This policy only shares routes between the LAN segments; it does not open traffic
+# between them. A zone-based firewall (security policy) must also be configured between the
+# shared segment and each branch segment to actually permit the extranet traffic — see
+# sample_device_security_policies.yaml.
+
+local_extranet_policies:
+  - name: "local-extranet-policy-1"
+    description: "local_extranet_policy_1_description"
+    sharedSegment: "lan-segment-3" # Will be resolved to ID
+    targetSegments:
+      - "lan-7-test" # Will be resolved to ID
+      - "lan-8-test"
+    source:
+      sites:
+        - "San Jose-sdktest" # Will be resolved to IDs
+      # Optional. Restricts which prefixes from the shared segment are advertised (omit
+      # entirely to share all prefixes). Each entry needs "ipPrefix"; "maskLower"/"maskUpper"
+      # are optional and further restrict ipPrefix to only the subnets within that
+      # mask-length range (matches the portal UI's Exact/Range/Less & Equal/Greater & Equal
+      # rule dropdown). Defaults depend on which are given: neither given -> both default to
+      # ipPrefix's own mask length (exact match); only maskUpper given -> maskLower defaults
+      # to ipPrefix's own mask length; only maskLower given -> maskUpper defaults to 32; both
+      # given -> used as-is.
+      prefixSet:
+        name: "list"
+        mode: "ipv4"
+        entries:
+          - ipPrefix: "10.1.1.0/24"
+          - ipPrefix: "70.0.0.0/23"
+            maskLower: 25
+            maskUpper: 30
+          - ipPrefix: "100.100.0.0/22"
+            maskUpper: 30
+        # add more entries as needed, e.g.:
+        #   - ipPrefix: "10.1.2.0/24"
+    branches:
+      sites:
+        - "New York-sdktest" # Will be resolved to IDs

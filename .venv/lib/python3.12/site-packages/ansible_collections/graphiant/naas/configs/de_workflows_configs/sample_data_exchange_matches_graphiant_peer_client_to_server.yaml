@@ -1,0 +1,24 @@
+# Sample Data Exchange Matches Configuration - Client to Server, Graphiant Customer
+# Run in the proxy tenant (same tenant that created the customer and the service) to match
+# "graphiant-customer-1" (sample_data_exchange_customers_graphiant_peer.yaml) to
+# "de-service-graphiant-peer-c2s" (sample_data_exchange_services_graphiant_peer_client_to_server.yaml).
+#
+# consumerPrefixes is reversed relative to sample_data_exchange_matches_client_to_server.yaml:
+# there, the consumer's prefix is 10.101.2.0/24; here, the consumer prefix is
+# 10.48.52.152/30 — a covering block for the old sample's service prefixes
+# (10.48.52.152/31 + 10.48.52.154/31).
+#
+# No NAT translation is configured at match time for client_to_server (same as the
+# non-Graphiant-customer client_to_server sample) — that's producer-side, configured at
+# service creation.
+
+data_exchange_matches:
+  - customerName: "graphiant-customer-1"
+    serviceName: "de-service-graphiant-peer-c2s"
+    servicePrefixes: # Select specific service prefixes to include
+      - prefix: "10.101.2.0/31"
+        tag: "de-service-graphiant-peer-c2s-prefix-1"
+      - prefix: "10.101.2.2/31"
+        tag: "de-service-graphiant-peer-c2s-prefix-2"
+    consumerPrefixes:
+      - "10.48.52.152/30"

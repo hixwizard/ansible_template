@@ -1,0 +1,50 @@
+# Sample Local Extranet Policies Update Configuration
+# Same policy 'name' as sample_local_extranet_policies.yaml, with a maskLower/maskUpper
+# range restriction added to the source prefixSet entry — demonstrates update_policies
+# (the policy must already exist, created via create_policies with
+# sample_local_extranet_policies.yaml). Unlike Data Exchange, the full policy is mutable
+# here, not just a single field.
+#
+# NOTE: This policy only shares routes between the LAN segments; it does not open traffic
+# between them. A zone-based firewall (security policy) must also be configured between the
+# shared segment and each branch segment to actually permit the extranet traffic — see
+# sample_device_security_policies.yaml.
+#
+# NOTE: update_policies replaces the full policy, not a merge/patch — carry over every field
+# from the create config unchanged, and only change the fields you actually want to update.
+# E.g. to add a new prefix to the prefixSet, list all existing entries plus the new one;
+# omitting an existing entry removes it.
+
+local_extranet_policies:
+  - name: "local-extranet-policy-1"
+    description: "local_extranet_policy_1_description"
+    sharedSegment: "lan-segment-3" # Will be resolved to ID
+    targetSegments:
+      - "lan-7-test" # Will be resolved to ID
+      - "lan-8-test"
+    source:
+      sites:
+        - "San Jose-sdktest" # Will be resolved to IDs
+      # Optional. Restricts which prefixes from the shared segment are advertised (omit
+      # entirely to share all prefixes). Each entry needs "ipPrefix"; "maskLower"/"maskUpper"
+      # are optional and further restrict ipPrefix to only the subnets within that
+      # mask-length range (matches the portal UI's Exact/Range/Less & Equal/Greater & Equal
+      # rule dropdown). Defaults depend on which are given: neither given -> both default to
+      # ipPrefix's own mask length (exact match); only maskUpper given -> maskLower defaults
+      # to ipPrefix's own mask length; only maskLower given -> maskUpper defaults to 32; both
+      # given -> used as-is.
+      prefixSet:
+        name: "list"
+        mode: "ipv4"
+        entries:
+          - ipPrefix: "10.0.0.0/24"
+          - ipPrefix: "70.0.0.0/23"
+            maskLower: 25
+            maskUpper: 30
+          - ipPrefix: "100.100.0.0/22"
+            maskUpper: 30
+          - ipPrefix: "2.2.100.0/23"
+            maskUpper: 27
+    branches:
+      sites:
+        - "New York-sdktest" # Will be resolved to IDs

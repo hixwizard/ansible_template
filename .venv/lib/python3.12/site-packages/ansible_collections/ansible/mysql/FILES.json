@@ -1,0 +1,579 @@
+{
+ "files": [
+  {
+   "name": ".",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "COPYING",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+   "format": 1
+  },
+  {
+   "name": "PSF-license.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "83b042fc7d6aca0f10d68e45efa56b9bc0a1496608e7e7728fe09d1a534a054a",
+   "format": 1
+  },
+  {
+   "name": "changelogs",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "changelogs/fragments",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "changelogs/fragments/.keep",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "format": 1
+  },
+  {
+   "name": "changelogs/config.yaml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "666d2b99d43955f076a7648bb8b7875564f199b7192018a96c364dac59105bfd",
+   "format": 1
+  },
+  {
+   "name": "changelogs/changelog.yaml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1f063f2e6601f15843c835875f0f0f1858bc1d70f8afab486454ad0855419dc1",
+   "format": 1
+  },
+  {
+   "name": "meta",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "meta/ee-requirements.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "d7746985af22155e4f482e08c5bd2d5786e2498b4273c2153176531897b85ca8",
+   "format": 1
+  },
+  {
+   "name": "meta/execution-environment.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1712c88058cb0c7d516eabf5b0d54e235be825d1768f1cbf5a6e958b7734818b",
+   "format": 1
+  },
+  {
+   "name": "meta/runtime.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "9ea20add30fbadd910872a352d433cdd8a18844dd2492149b6ae680ac090ad89",
+   "format": 1
+  },
+  {
+   "name": "plugins",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "533dcaafc018b89297cf72098c36ea97dd2352a3f734fb8cc7568af8818fd7f1",
+   "format": 1
+  },
+  {
+   "name": "plugins/doc_fragments",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/doc_fragments/mysql.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "edeb8aae406aef61b3cf31e950111ddfe7cdca7a37adc37aac04693038cbf134",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/_version.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1bdef9acb4f7b98135dee7366e5b26df32c52664175039b877a604b2865dadb5",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/database.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "647370826903ee88327f9faa84c007a44969c9d5093fcb979c7fbcacd1fea971",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mariadb",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mariadb/replication.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6e35593f05e38fbe05ada14b7f2fc1f97f9cf7a6c0d8aa81a40456f69f7ad6d1",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mariadb/role.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "ee095a65d17bee508c365caee4f5632fe5334055eb488a7c45c18c32eccae69c",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mariadb/user.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "132ab599db8d786e48a8b5f38df9398bc408aaa13b053d880ffd11c3435a4fba",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mysql",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mysql/hash.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "54c2135df18e362fc272a80a1d3224e575e0d3226d08c77f783f02ffc2c2b12e",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mysql/replication.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "81504537cb7aa6858415de3587c3d9889c95a55f63c1c17000dbdd5359f7e676",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mysql/role.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8f588fdfb7b55952a707a0dfe3f60460a36988249ec0d228f632838ac3b66981",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/implementations/mysql/user.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "9ed0d0a91ce43789f20b38cab41d5b9f988f85d11ec05c5fcba79ce0aaf52718",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/version.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "9d8cdb199b50593d3890fb415878a67ae267cbf00afdbe33d22e2d3d3e16d59e",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/command_resolver.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "a394e81392aa05a89852ab2eb20ba3250ad449b099370144a46baf3e576f5d65",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/perf_schema.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "c00939d9273804ec63cc0233950a76ae344eb3ff2b04099779116248bf83455b",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/resource_group.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "0118361d8c0dfc4afde17e2273da39cf651d5260ebb216d903404d000ba26b6c",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/user.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "7c628c59e44cf3f56d04a643027ff51353a478883dd2de2574f258b16c7ca3b8",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/mysql.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "64de5a5ae3749c16f89562038047501bc4dc735f400b3c901632c10abcdff849",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/tablespace.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "44af57754b945df5a626fcd4fc7e2f2a404e273f375a240de2a1374fbe866c7d",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_resource_group.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "cda507bcdf1d113552002e814906f226cb35cc033f9479bbd2788f3f5ea862be",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_resource_group_info.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "291739ab8717df130fd8f7ea7ff324020aed28e483fd3403260c891c36e41c04",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_clone.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "24431259b43bda423979d2f319fa7f71f3182d1c018026d9bfa6b0b4cd8c8b59",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_binlog_info.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "68ddefabce5c88fa1970d7ff4265a304930494d57d46863b759af5334c793cb9",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_db.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "000db50ff1e817884ccd06a658f1b0b43f8b1ef875408dcc560ee4e4a8ac3fd6",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_info.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "7c3e1fd3cc14359abe787d015d3cecf1843e082dbb3f5204ee99ee5b225e15ae",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_password_policy.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "cb54db25199cfd690a6d3f341d6e59f8872c26ca142f5d80b4941420ca83ccf5",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_perf_schema.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "7596f11af38b74292ca02b139f4302f1f85b348dd8bdb86b9ffca433455335e6",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_query.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "835b68346e3a07f09591168b7f90fb9e427a5254ce035424a789fd6a94cb2542",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_replication.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "32f19f68ce72f40223383e22859bb07a83eff03872757b5388a2b4ae518a652f",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_replication_filter.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "818a97284acf1b87bd9bacf620bd403343fb9e699b350d5e9f9f057fa62ce4e5",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_role.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "7c0f5d8d48bc76fdf57a3b91dc9a6a160a8bce76fe809b9cde78dd1b13389727",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_slow_log.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e187e3ce765ab65adfd80c52da2e0138ffdf49d7bec5c112f47578e5fabdd192",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_user.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "cd6f822a4ea269934db63f41c38c69c6a753f9a9d4e995a4a3822bac609d64d5",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_variables.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "92ee5aa7db8f1b7a99545e0b3e6d3abfa85eff1758fc812b047d665d97f1238b",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_partition.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "21a5d08674abba32c316fa5795e17053c71dac85cbd44581da1c18b6f3f75547",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_tablespace.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "a13701585ef33171b0b8284ba5415579ba12496c190b8c5a3fee20ef014c7d36",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_tablespace_info.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "d87196a353f2da58b892386556cdd4a1c98a21a06d7d89723c79a780f9faba8c",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/mysql_tls.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1ee1fab4a50850ce689ebfc34639c41defbeab42c92667d1a6768b5695b4e840",
+   "format": 1
+  },
+  {
+   "name": "simplified_bsd.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "f11e51ed1eec39ad21d458ba44d805807a301c17ee9fe39538ccc9e2b280936c",
+   "format": 1
+  },
+  {
+   "name": "tests",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "tests/sanity",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.15.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6b4b3d9fef72c8f0f928ab98a391980cdd8e105223ae32568e076b6392dd2244",
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.16.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6b4b3d9fef72c8f0f928ab98a391980cdd8e105223ae32568e076b6392dd2244",
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.17.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6b4b3d9fef72c8f0f928ab98a391980cdd8e105223ae32568e076b6392dd2244",
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.18.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6b4b3d9fef72c8f0f928ab98a391980cdd8e105223ae32568e076b6392dd2244",
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.19.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6b4b3d9fef72c8f0f928ab98a391980cdd8e105223ae32568e076b6392dd2244",
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.20.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6b4b3d9fef72c8f0f928ab98a391980cdd8e105223ae32568e076b6392dd2244",
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.21.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e1e3f2620ee90d0e4cb8102459cd96d36e61a6cb8aa775a076c2e2af188e4961",
+   "format": 1
+  },
+  {
+   "name": "tests/sanity/ignore-2.22.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e1e3f2620ee90d0e4cb8102459cd96d36e61a6cb8aa775a076c2e2af188e4961",
+   "format": 1
+  },
+  {
+   "name": "CONTRIBUTORS",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6daa65b1eebf1dac16ddcfd51a2228102c387a3a1ef822f90e7463da137d171d",
+   "format": 1
+  },
+  {
+   "name": "requirements.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "20a955f9fe28f74b0e76731de8706fa349769ea7c938653393065e684106b918",
+   "format": 1
+  },
+  {
+   "name": "ansible-navigator.log",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "64beb2fb50d6c57e6e9edf5cba1c8e517ac4f4dadacd6a84427f9ec68569a084",
+   "format": 1
+  },
+  {
+   "name": "CONTRIBUTING.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "17aa10081907eb19ca656b81e03dfaf0a437f89664940ed09f9f8563871a194d",
+   "format": 1
+  },
+  {
+   "name": ".ansible-lint",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "9332186b74646632722e01d07661fe8a8eaff73df4d46a2bc897475f5e69c97e",
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache/README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad",
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache/.gitignore",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "3ed731b65d06150c138e2dadb0be0697550888a6b47eb8c45ecc9adba8b8e9bd",
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache/CACHEDIR.TAG",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "37dc88ef9a0abeddbe81053a6dd8fdfb13afb613045ea1eb4a5c815a74a3bde4",
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache/v",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache/v/cache",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache/v/cache/nodeids",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "96976de6969c22ec4389873ff3c16ac515c636e99e9f02b0266865565bdd670d",
+   "format": 1
+  },
+  {
+   "name": ".pytest_cache/v/cache/lastfailed",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "f096b466ac91e5b8ec873394918222706fbbf0e4cf30cb1b3e28d869fb87d65e",
+   "format": 1
+  },
+  {
+   "name": "README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "ddbabc91e7d96ecc3cb793cb2cd580bb439ce03119278e73d72860fe61a451c9",
+   "format": 1
+  },
+  {
+   "name": "CHANGELOG.rst",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "5e83a0e25880f696a3dffd03fe82c41bb6526bea203a16a6590343cae3e681d7",
+   "format": 1
+  }
+ ],
+ "format": 1
+}

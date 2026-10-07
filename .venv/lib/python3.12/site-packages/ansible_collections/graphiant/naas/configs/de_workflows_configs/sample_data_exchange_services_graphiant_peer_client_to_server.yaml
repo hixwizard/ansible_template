@@ -1,0 +1,43 @@
+# Sample Data Exchange Services Configuration - Client to Server, Graphiant Customer
+# Created in the PROXY tenant (matches the live-tested "de-service-created-in-proxy-tenant"
+# scenario). Pairs with sample_data_exchange_customers_graphiant_peer.yaml (created in the
+# proxy tenant too), sample_data_exchange_matches_graphiant_peer_client_to_server.yaml, and
+# sample_data_exchange_acceptance_graphiant_peer_client_to_server.yaml (accepted in the main
+# tenant) to demonstrate a complete client_to_server flow for a Graphiant customer end to
+# end, with NO Site-to-Site VPN Connection needed on acceptance
+# (see https://docs.graphiant.com/docs/data-exchange).
+#
+# serviceLanSegment/sites are the proxy tenant's own — "customer-1-segment" (not
+# "lan-segment-3", which belongs to the main tenant) and "site-sjc-sdktest" (edge devices
+# gw-2-sdktest/gw-4-sdktest), the same site used by sample_data_exchange_acceptance.yaml.
+#
+# Prefixes are reversed relative to sample_data_exchange_services_client_to_server.yaml: there,
+# 10.48.52.152/31 + 10.48.52.154/31 are the service's own prefixes and 10.101.2.0/24 is the
+# consumer's; here, 10.101.2.0/24 is carved into this service's two exposed prefixes, and
+# 10.48.52.152/31 + 10.48.52.154/31 (as a covering 10.48.52.152/30) becomes the consumer
+# prefix in the match/acceptance files.
+
+data_exchange_services:
+  - serviceName: "de-service-graphiant-peer-c2s"
+    serviceType: "client_to_server"
+    policy:
+      serviceLanSegment: "customer-1-segment"  # Will be resolved to ID (proxy tenant's LAN segment)
+      description: "de-service-graphiant-peer-c2s desc"
+      prefixTags:
+        - prefix: "10.101.2.0/31"
+          tag: "de-service-graphiant-peer-c2s-prefix-1"
+        - prefix: "10.101.2.2/31"
+          tag: "de-service-graphiant-peer-c2s-prefix-2"
+
+      sites:
+        - sites: ["site-sjc-sdktest"]  # Will be resolved to ID
+          siteLists: []
+
+      # One NAT pool per edge device of the selected site — site-sjc-sdktest's two devices.
+      natTranslationMode:
+        centralized:
+          prefixes:
+            "gw-2-sdktest":  # Device name will be resolved to device ID
+              prefixes: ["162.131.7.72/31"]
+            "gw-4-sdktest":  # Device name will be resolved to device ID
+              prefixes: ["162.131.7.74/31"]

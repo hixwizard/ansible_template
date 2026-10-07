@@ -1,0 +1,12 @@
+---
+# Ручное обновление SSL-сертификатов Let's Encrypt.
+# Обычно не требуется: certbot.timer продлевает сертификаты автоматически
+# и перезагружает nginx через renewal-hook.
+- name: Обновление SSL-сертификатов
+  hosts: app
+  become: true
+  tasks:
+    - name: Renew Let's Encrypt certificates
+      ansible.builtin.command: certbot renew --non-interactive
+      register: renew_result
+      changed_when: "'no renewals were attempted' not in renew_result.stdout"

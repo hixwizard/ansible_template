@@ -1,0 +1,67 @@
+# Runtime requirements for the infinidat.infinibox Ansible collection.
+# Dev-only tooling (pylint, black, pytest, isort, etc.) lives in requirements-dev.txt.
+
+# Core SDK and direct runtime deps.
+# infinisdk floored at >=289.1.4: earlier releases import pkg_resources (removed
+# in setuptools 81). 289.1.4 migrated to importlib.metadata and its transitive
+# dependency infi.dtypes.wwn floored below at >=0.2.0 dropped its pkg_resources
+# namespace declaration, so no setuptools upper-bound cap is required.
+infinisdk>=289.1.4
+arrow
+urllib3
+# NOTE: resolvelib is intentionally NOT listed here. It is not used by the
+# collection modules; it is a transitive dependency of ansible-core (the
+# controller), which already pins it to <1.1.0. An unbounded resolvelib entry
+# here resolves to a newer version (>=1.1.0) that ansible-galaxy rejects.
+
+# infinisdk transitive deps (kept explicit for reproducibility)
+api-object-schema
+appdirs
+capacity
+click
+colorama
+confetti
+flux
+gossip
+infi.dtypes.iqn
+infi.dtypes.nqn
+infi.dtypes.wwn>=0.2.0
+mitba
+munch
+pact
+responses
+sentinels
+storage-interfaces
+URLObject
+vintage
+waiting
+
+# HTTP / crypto stack
+requests
+certifi
+chardet
+charset-normalizer
+idna
+cryptography
+asn1crypto
+cffi
+pycparser
+
+# YAML / templating used by Ansible / Jinja
+Jinja2
+MarkupSafe
+ruamel.yaml
+ruamel.yaml.clib
+
+# General utilities
+Logbook
+more-itertools
+packaging
+platformdirs
+pyparsing
+python-dateutil
+six
+typing_extensions
+voluptuous
+wcwidth
+wrapt

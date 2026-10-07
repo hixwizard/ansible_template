@@ -1,0 +1,8 @@
+---
+# Коллекции Ansible, необходимые для этого шаблона.
+# Установка: ansible-galaxy install -r requirements.yaml
+collections:
+  - name: community.general
+    version: ">=7.0.0"
+  - name: ansible.posix
+    version: ">=1.5.0"

@@ -1,0 +1,35 @@
+{
+ "collection_info": {
+  "namespace": "netapp_eseries",
+  "name": "santricity",
+  "version": "2.0.3",
+  "authors": [
+   "Vu Tran (@VuTran007)",
+   "Christian Whiteside (@mcwhiteside)"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "netapp",
+   "eseries",
+   "santricity"
+  ],
+  "description": "Latest content available for NetApp E-Series Ansible automation.",
+  "license": [
+   "BSD-3-Clause"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "https://www.github.com/netapp/santricity",
+  "documentation": "https://github.com/netapp/santricity",
+  "homepage": "https://www.github.com/netapp/santricity",
+  "issues": "https://github.com/netapp/santricity/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "cb70f7dfe0cdc32480fed1bd3dfaa837b4e4c430bef55d8a5b7b8fadd3a2d8db",
+  "format": 1
+ },
+ "format": 1
+}

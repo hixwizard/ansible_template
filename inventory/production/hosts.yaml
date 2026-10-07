@@ -1,16 +1,12 @@
+---
 all:
-  chicldren:
+  children:
     web:
       hosts:
         web1:
-          ansible_host: 192.168.1.10
-        web2:
-          ansible_host: 192.168.1.11
-    db:
-      hosts:
-        db1:
-          ansible_host: 192.168.1.20
+          # TODO: замените на реальный IP/DNS вашего сервера
+          ansible_host: 203.0.113.10
+          ansible_user: deploy
     app:
-      chicldren:
+      children:
         web:
-        db:

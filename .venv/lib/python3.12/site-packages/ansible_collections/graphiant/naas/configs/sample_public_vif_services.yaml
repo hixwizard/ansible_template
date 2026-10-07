@@ -1,0 +1,119 @@
+# Sample Public VIF Services Configuration
+# This file demonstrates how to configure gateway Public VIF ("local data exchange") services
+#
+# A Public VIF service is hosted entirely on Graphiant-managed gateway appliances in a chosen
+# region/storage provider. It exposes a producer LAN segment (VRF) to one or more consumer
+# LAN segments — unlike Local Extranet/Data Exchange, there is no separate apply/rollout step.
+#
+# The system will:
+# 1. Read service configuration from the 'public_vif_services' list
+# 2. Resolve lanSegment/region names, consumerLanSegments keys (LAN segment names),
+#    gatewayBgpNeighbors/natPrefixStrategy keys (device names), and advertisement.sites/
+#    siteLists (if given) to their IDs; expand gatewayBgpNeighbors' flat fields
+# 3. POST to v1/pvif with the payload
+#
+# See the graphiant_public_vif module documentation for update_services / delete_services
+# behavior, including check mode (--check) and diff mode (--check --diff) support.
+#
+# SECURITY: BGP Neighbor MD5 Passwords
+# -----------------------------------
+# Precedence (YAML wins if non-null; vault fills null/absent):
+#   1. YAML non-null value  →  used as-is (dev/local testing only; do not commit secrets)
+#   2. YAML null or absent  →  looked up from vault_public_vif_bgp_md5_passwords, keyed by
+#                              service name -> gatewayBgpNeighbors device key
+#   3. Not in YAML AND not in vault  →  md5Password left unset (neighbor has no BGP MD5
+#                                       auth configured)
+#
+# Recommended production workflow: same as other secrets in this collection --
+# fetch from your organization's secrets store, pass as module params via
+# include_vars, no_log: true. See configs/vault_secrets.yml.example.
+#
+# -----------------------------------------------------------------------------------------
+# The entry below ("pvif-service-1") shows EVERY field the API accepts, each commented
+# (Required) or (Optional)
+# -----------------------------------------------------------------------------------------
+#
+# PREREQUISITES (this config, and the tests that use it, will fail if these are not already
+# true on the target tenant/region — this collection does not provision any of them):
+#   1. The Public VIF gateway service itself must already be enabled/provisioned for the
+#      chosen region/storageProvider (i.e. Graphiant-managed gateway appliances exist there).
+#   2. Those gateway appliances (referenced under gatewayBgpNeighbors/natPrefixStrategy,
+#      e.g. "gateway-1"/"gateway-2") must already have the producer 'lanSegment' configured
+#      on them.
+#   3. The gateway appliances' interfaces referenced via gatewayBgpNeighbors."device name".
+#      localInterface must already exist and be configured on that same LAN segment.
+# -----------------------------------------------------------------------------------------
+
+public_vif_services:
+    # (Required) Identify the service and where it lives.
+  - serviceName: "pvif-service-1" # Service display name.
+    lanSegment: "Karen" # Producer LAN segment (VRF). Name is resolved to ID.
+    region: "us-central-1 (Chicago)" # Graphiant region for the gateway appliances. Name is resolved to ID.
+    storageProvider: "AWS" # Storage provider; must match region/provider of the gateway appliances.
+
+    # (Optional) Define which prefixes are advertised over the Public VIF. These rules apply
+    # globally across all selected Gateways.
+    coveringPrefixes:
+      - "6.6.6.0/24"
+
+    # (Required, at least one entry)
+    # NOTE: If configuring two gateways, both peering IPs must be in the same subnet and
+    # reachable via the LAN segment selected in Service Configuration
+    gatewayBgpNeighbors:
+      "gateway-1": # Raw device id is also va lid
+        # Neighbor
+        peerAsn: 65001 # Remote peer ASN.
+        remoteAddress: "5.5.5.2" # Remote peer IP.
+        # (Optional) Select an interface that has a public ip to peer with the cloud provider.
+        localAddress: "3.3.3.1"
+        # Must be a subinterface (e.g. "GigabitEthernet6/0/0.100") — a main interface (e.g.
+        # "GigabitEthernet6/0/0") is not valid here.
+        localInterface: "GigabitEthernet6/0/0.100"
+        # (Optional) Control which routes are accepted from and advertised to this neighbor.
+        addressFamilies:
+          ipv4:
+            inboundPolicy: "Set_Pref_Community_120"
+            # outboundPolicy:
+          # ipv6:
+            # inboundPolicy:
+            # outboundPolicy:
+        # Path Manipulation
+        allowAsIn: 1 # (Optional) Allow-AS-in count (accept own ASN in AS-path this many times).
+        asOverride: true # (Optional) AS-override for this neighbor.
+        removePrivateAs: true # (Optional) Strip private ASNs from the AS-path sent to this neighbor.
+        # Session Timers
+        holdTimerValue: 90 # (Optional) in seconds.
+        keepaliveTimerValue: 30 # (Optional) in seconds.
+        multiHop: 1 # (Optional) eBGP multihop TTL.
+        # (Optional) MD5 authentication password for this neighbor.
+        # if md5Password is set to null → looked up from vault_public_vif_bgp_md5_passwords
+        md5Password: "secretWord"
+        sendCommunity: true # (Optional) Send BGP communities to this neighbor.
+        maxPrefixValue: 1000 # (Optional) Max prefixes to accept from this neighbor.
+      "gateway-2": # Raw device id is also valid
+        # Neighbor
+        peerAsn: 65002 # Remote peer ASN.
+        remoteAddress: "5.5.5.3" # Remote peer IP.
+        localAddress: "3.3.3.2" # (Optional) Local IP used for this neighbor.
+        localInterface: "GigabitEthernet6/0/0.100" # (Optional) Must be a subinterface, e.g. "GigabitEthernet6/0/0.100".
+      
+    # (Required, dict, at least one entry)
+    # Always centralized NAT for Public VIF services. Public CIDR(s) advertised to the cloud router.
+    # Every gatewayBgpNeighbors key above must have a matching entry here.
+    natPrefixStrategy:
+      "gateway-1": "198.168.2.0/24"
+      "gateway-2": "198.168.1.0/24"
+
+    # (Required, at least one entry)
+    # Determines which sites will use this Public VIF for outbound connectivity.
+    consumerLanSegments:
+      "lan-7-test": 
+        consumerPrefixes: # (Optional) CIDRs advertised to this consumer LAN segment.
+          - "1.1.1.0/24"
+
+    # (Optional) Scopes which sites can consume this service. Omitting 'advertisement'
+    # entirely allows advertisement to all symmetric sites
+    advertisement:
+      sites: # (Optional) Name is resolved to ID.
+        - "New York-sdktest"
+      # siteLists: # (Optional) Name is resolved to ID.

@@ -1,0 +1,13 @@
+# Ansible
+*.retry
+.ansible/
+
+# Секреты и ключи
+.env
+secrets/
+*.pem
+*.key
+*.pub
+
+# Vault
+.vault_pass

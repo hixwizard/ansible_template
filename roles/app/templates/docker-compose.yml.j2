@@ -1,0 +1,19 @@
+---
+# Универсальный docker-compose для одного сервиса.
+# Адаптируйте под свой проект: добавляйте volumes, дополнительные сервисы (БД, redis),
+# команды, healthcheck и т.д. Шаблон шаблонизируется Ansible в app_dir/docker-compose.yml.
+services:
+  {{ app_name }}:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "{{ app_name }}:{{ app_version }}"
+    container_name: "{{ app_name }}"
+    restart: unless-stopped
+{% if app_env | length > 0 %}
+    env_file:
+      - .env
+{% endif %}
+    ports:
+      # nginx на хосте проксирует на этот порт (127.0.0.1 — наружу не торчит)
+      - "127.0.0.1:{{ app_http_port }}:{{ app_port }}"

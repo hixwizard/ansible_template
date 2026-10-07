@@ -1,0 +1,37 @@
+---
+# ===================== Приложение =====================
+
+# Имя приложения (используется для каталогов, контейнеров, образов)
+app_name: my_app
+app_version: "1.0.0"
+
+# Домен, по которому приложение будет доступно
+domain: example.com
+
+# Git-репозиторий вашего проекта.
+# Пустое значение — если код уже находится на сервере (не рекомендуется).
+git_repo: https://github.com/your-org/my_app.git
+git_branch: main
+
+# Порт, который слушает приложение ВНУТРИ контейнера
+app_port: 3000
+
+# Порт на хосте (127.0.0.1), на который nginx проксирует трафик
+app_http_port: 8080
+
+# Переменные окружения для контейнера (шаблонизируются в .env на сервере).
+# Секреты шифруйте: ansible-vault encrypt_string 'secret' --name 'DATABASE_URL'
+app_env:
+  NODE_ENV: production
+  # DATABASE_URL: "postgres://user:pass@host/db"
+  # SECRET_KEY: "..."
+  # ANY_CUSTOM_VAR: "value"
+
+# ===================== SSL (Let's Encrypt) =====================
+
+ssl_enabled: true
+ssl_email: admin@example.com
+
+# ===================== Система =====================
+
+deploy_user: deploy

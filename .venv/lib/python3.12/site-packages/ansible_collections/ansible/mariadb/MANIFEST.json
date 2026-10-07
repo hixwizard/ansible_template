@@ -1,0 +1,31 @@
+{
+ "collection_info": {
+  "namespace": "ansible",
+  "name": "mariadb",
+  "version": "6.0.2",
+  "authors": [
+   "Ansible community"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "database",
+   "mariadb"
+  ],
+  "description": "MariaDB collection for Ansible",
+  "license": [],
+  "license_file": "COPYING",
+  "dependencies": {},
+  "repository": "https://github.com/ansible-collections/ansible.mariadb",
+  "documentation": "https://github.com/ansible-collections/ansible.mariadb",
+  "homepage": "https://github.com/ansible-collections/ansible.mariadb",
+  "issues": "https://github.com/ansible-collections/ansible.mariadb/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "a6f95bfd711b088da2e2ac9f1ef9fa6d646b85fd9b66c6d88e3e79fb7f0a8c46",
+  "format": 1
+ },
+ "format": 1
+}

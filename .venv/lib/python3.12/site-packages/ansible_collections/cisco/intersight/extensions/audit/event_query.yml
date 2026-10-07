@@ -1,0 +1,94 @@
+---
+cisco.intersight.*:
+  query: >-
+    (
+      {
+        "access.Policy": "networking",
+        "asset.Target": "security_identity",
+        "bios.Policy": "compute",
+        "boot.PrecisionPolicy": "compute",
+        "fabric.PortPolicy": "networking",
+        "fabric.EthNetworkPolicy": "networking",
+        "fabric.FcNetworkPolicy": "networking",
+        "fabric.EthNetworkGroupPolicy": "networking",
+        "fabric.EthNetworkControlPolicy": "networking",
+        "fabric.LinkControlPolicy": "networking",
+        "fabric.MulticastPolicy": "networking",
+        "fabric.SystemQosPolicy": "networking",
+        "fabric.FcZonePolicy": "networking",
+        "vnic.VnicTemplate": "networking",
+        "vnic.VhbaTemplate": "networking",
+        "vnic.LanConnectivityPolicy": "networking",
+        "vnic.SanConnectivityPolicy": "networking",
+        "vnic.EthAdapterPolicy": "networking",
+        "vnic.FcAdapterPolicy": "networking",
+        "vnic.EthQosPolicy": "networking",
+        "vnic.FcQosPolicy": "networking",
+        "vnic.FcNetworkPolicy": "networking",
+        "vnic.IscsiAdapterPolicy": "networking",
+        "vnic.IscsiBootPolicy": "networking",
+        "vnic.IscsiStaticTargetPolicy": "networking",
+        "vmedia.Policy": "storage",
+        "macpool.Pool": "networking",
+        "fcpool.Pool": "networking",
+        "iam.EndPointUserPolicy": "security_identity",
+        "iqnpool.Pool": "networking",
+        "ippool.Pool": "networking",
+        "uuidpool.Pool": "compute",
+        "storage.StoragePolicy": "storage",
+        "power.Policy": "compute",
+        "thermal.Policy": "compute",
+        "kvm.Policy": "compute",
+        "ipmioverlan.Policy": "monitoring",
+        "ntp.Policy": "networking",
+        "snmp.Policy": "monitoring",
+        "syslog.Policy": "monitoring",
+        "networkconfig.Policy": "networking",
+        "firmware.Policy": "compute"
+      } as $mapping |
+      {
+        "access": "network_policy",
+        "asset": "asset_target",
+        "bios": "bios_policy",
+        "boot": "boot_policy",
+        "fabric": "fabric_policy",
+        "vnic": "network_interface_policy",
+        "vmedia": "virtual_media",
+        "macpool": "mac_pool",
+        "fcpool": "fc_pool",
+        "iam": "iam",
+        "iqnpool": "iqn_pool",
+        "ippool": "ip_pool",
+        "uuidpool": "uuid_pool",
+        "storage": "storage_policy",
+        "power": "power_policy",
+        "thermal": "thermal_policy",
+        "kvm": "kvm_policy",
+        "ipmioverlan": "ipmi_policy",
+        "ntp": "ntp_policy",
+        "snmp": "snmp_policy",
+        "syslog": "syslog_policy",
+        "networkconfig": "network_config_policy",
+        "firmware": "firmware_policy"
+      } as $device_type_mapping |
+      (.api_response ) |
+      (if type=="array" then .[]
+        else if type=="object" then .
+              else empty end
+       end
+       ) as $data |
+        select($data.Moid != null and $data.ObjectType != null) |
+        {
+          name: $data.Moid,
+          canonical_facts: {
+            name: ($data.Name // "UNKNOWN"),
+            id: $data.Moid,
+            node_type: $data.ObjectType
+          },
+          facts: {
+            infra_type: "private_cloud",
+            infra_bucket: ($mapping[$data.ObjectType] // "unknown"),
+            device_type: (($data.ObjectType | split(".")[0]) as $dt | ($device_type_mapping[$dt] // $dt))
+          }
+        }
+    )

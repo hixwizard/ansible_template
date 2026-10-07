@@ -1,0 +1,265 @@
+# Copyright (c) 2015, Steve Gargan <steve.gargan@gmail.com>
+# Copyright (c) 2017 Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+from __future__ import annotations
+
+DOCUMENTATION = r"""
+author: Unknown (!UNKNOWN)
+name: consul_kv
+short_description: Fetch metadata from a Consul key value store
+description:
+  - Lookup metadata for a playbook from the key value store in a Consul cluster. Values can be easily set in the kv store
+    with simple rest commands.
+  - C(curl -X PUT -d 'some-value' http://localhost:8500/v1/kv/ansible/somedata).
+options:
+  _terms:
+    description: List of key(s) to retrieve.
+    type: list
+    elements: string
+  recurse:
+    type: boolean
+    description: If V(true), retrieves all the values that have the given key as prefix.
+    default: false
+  index:
+    description:
+      - If the key has a value with the specified index then this is returned allowing access to historical values.
+    type: int
+  datacenter:
+    description:
+      - Retrieve the key from a consul datacenter other than the default for the consul host.
+    type: str
+  token:
+    description: The acl token to allow access to restricted values.
+    type: str
+    secret: true
+  host:
+    default: localhost
+    type: str
+    description:
+      - The target to connect to, must be a resolvable address.
+      - It is determined from E(ANSIBLE_CONSUL_URL) if that is set.
+    ini:
+      - section: lookup_consul
+        key: host
+  port:
+    description:
+      - The port of the target host to connect to.
+      - If you use E(ANSIBLE_CONSUL_URL) this value is used from there.
+    type: int
+    default: 8500
+  scheme:
+    default: http
+    type: str
+    description:
+      - Whether to use http or https.
+      - If you use E(ANSIBLE_CONSUL_URL) this value is used from there.
+  validate_certs:
+    default: true
+    description:
+      - Whether to verify the TLS connection or not.
+      - Instead of setting this to V(false), please consider using O(ca_path) instead.
+    type: bool
+    env:
+      - name: ANSIBLE_CONSUL_VALIDATE_CERTS
+    ini:
+      - section: lookup_consul
+        key: validate_certs
+  ca_path:
+    description: The CA bundle to use for HTTPS connections.
+    type: str
+    version_added: "12.6.0"
+    env:
+      - name: ANSIBLE_CONSUL_CA_PATH
+    ini:
+      - section: lookup_consul
+        key: ca_path
+  client_cert:
+    description: The client cert to verify the TLS connection.
+    type: str
+    env:
+      - name: ANSIBLE_CONSUL_CLIENT_CERT
+    ini:
+      - section: lookup_consul
+        key: client_cert
+  url:
+    description:
+      - The target to connect to.
+      - 'Should look like this: V(https://my.consul.server:8500).'
+    type: str
+    version_added: 1.0.0
+    env:
+      - name: ANSIBLE_CONSUL_URL
+    ini:
+      - section: lookup_consul
+        key: url
+  empty_value:
+    description:
+      - Controls what is returned when a Consul value is null.
+    type: str
+    default: 'textual_none'
+    choices:
+      textual_none: Return the string V(None). This is the legacy behavior.
+      python_none: Return a Python V(null)/V(None) value.
+      empty_string: Return an empty string.
+    version_added: 13.1.0
+notes:
+  - On a macOS controller this lookup can abort the worker process it runs in, with Ansible reporting C(A worker was found
+    in a dead state). Lookups run in a forked process, and resolving the system proxy configuration there initializes macOS
+    frameworks that are not safe to use after a C(fork()); see U(https://github.com/ansible/ansible/issues/49207). Setting
+    any proxy environment variable, for example E(no_proxy), skips the system proxy lookup and avoids the crash.
+"""
+
+EXAMPLES = r"""
+- ansible.builtin.debug:
+    msg: 'key contains {{item}}'
+  with_community.general.consul_kv:
+    - 'key/to/retrieve'
+
+- name: Parameters can be provided after the key be more specific about what to retrieve
+  ansible.builtin.debug:
+    msg: 'key contains {{item}}'
+  with_community.general.consul_kv:
+    - 'key/to recurse=true token=E6C060A9-26FB-407A-B83E-12DDAFCB4D98'
+
+- name: retrieving a KV from a remote cluster on non default port
+  ansible.builtin.debug:
+    msg: "{{ lookup('community.general.consul_kv', 'my/key', host='10.10.10.10', port=2000) }}"
+"""
+
+RETURN = r"""
+_raw:
+  description:
+    - Value(s) stored in consul.
+  type: dict
+"""
+
+import base64
+import json
+from urllib.error import HTTPError
+from urllib.parse import quote, urlencode, urlparse
+
+from ansible.errors import AnsibleAssertionError, AnsibleError
+from ansible.module_utils.common.text.converters import to_text
+from ansible.module_utils.urls import open_url
+from ansible.plugins.lookup import LookupBase
+
+from ansible_collections.community.general.plugins.plugin_utils._lookup import check_for_wrong_terms
+
+_EMPTY_VALUE_MAP = {
+    "textual_none": "None",
+    "python_none": None,
+    "empty_string": "",
+}
+
+
+class LookupModule(LookupBase):
+    def run(self, terms, variables=None, **kwargs):
+        # get options
+        self.set_options(direct=kwargs)
+        check_for_wrong_terms(self, direct=kwargs)
+
+        scheme = self.get_option("scheme")
+        host = self.get_option("host")
+        port = self.get_option("port")
+        url = self.get_option("url")
+        if url is not None:
+            u = urlparse(url)
+            if u.scheme:
+                scheme = u.scheme
+            host = u.hostname
+            if u.port is not None:
+                port = u.port
+
+        validate_certs = self.get_option("validate_certs")
+        ca_path = self.get_option("ca_path")
+        client_cert = self.get_option("client_cert")
+
+        empty_value = _EMPTY_VALUE_MAP[self.get_option("empty_value")]
+        values = []
+        try:
+            for term in terms:
+                params = self.parse_params(term)
+                entries = self._kv_get(
+                    scheme=scheme,
+                    host=host,
+                    port=port,
+                    key=params["key"],
+                    token=params["token"],
+                    index=params["index"],
+                    recurse=params["recurse"],
+                    datacenter=params["datacenter"],
+                    validate_certs=validate_certs,
+                    ca_path=ca_path,
+                    client_cert=client_cert,
+                )
+                for entry in entries or []:
+                    v = entry["Value"]
+                    values.append(to_text(v) if v is not None else empty_value)
+        except Exception as e:
+            raise AnsibleError(f"Error locating '{term}' in kv store. Error was {e}") from e
+
+        return values
+
+    @staticmethod
+    def _kv_get(scheme, host, port, key, token, index, recurse, datacenter, validate_certs, ca_path, client_cert):
+        query = {}
+        if recurse:
+            query["recurse"] = "true"
+        if datacenter:
+            query["dc"] = datacenter
+        if index is not None:
+            query["index"] = index
+
+        url = f"{scheme}://{host}:{port}/v1/kv/{quote(key, safe='/')}"
+        if query:
+            url = f"{url}?{urlencode(query)}"
+
+        headers = {"X-Consul-Token": token} if token else {}
+
+        try:
+            response = open_url(
+                url,
+                headers=headers,
+                validate_certs=validate_certs,
+                ca_path=ca_path,
+                client_cert=client_cert,
+            )
+        except HTTPError as e:
+            if e.code == 404:
+                return None
+            raise
+
+        body = response.read()
+        if not body:
+            return None
+
+        entries = json.loads(body)
+        for entry in entries:
+            if entry.get("Value") is not None:
+                entry["Value"] = base64.b64decode(entry["Value"])
+        return entries
+
+    def parse_params(self, term):
+        params = term.split(" ")
+
+        paramvals = {
+            "key": params[0],
+            "token": self.get_option("token"),
+            "recurse": self.get_option("recurse"),
+            "index": self.get_option("index"),
+            "datacenter": self.get_option("datacenter"),
+        }
+
+        # parameters specified?
+        try:
+            for param in params[1:]:
+                if param and len(param) > 0:
+                    name, value = param.split("=")
+                    if name not in paramvals:
+                        raise AnsibleAssertionError(f"{name} not a valid consul lookup parameter")
+                    paramvals[name] = value
+        except (ValueError, AssertionError) as e:
+            raise AnsibleError(e) from e
+
+        return paramvals
