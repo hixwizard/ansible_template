@@ -1,0 +1,21 @@
+---
+- name: Initial server setup
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install common packages
+      apt:
+        name: ['curl', 'git', 'vim', 'htop']
+        state: present
+
+    - name: Create deploy user
+      user:
+        name: deploy
+        groups: sudo
+        shell: /bin/bash
+        create_home: yes

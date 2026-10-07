@@ -1,0 +1,8 @@
+---
+- name: Deploy application
+  hosts: app
+  become: yes
+  roles:
+    - role: nginx
+    - role: nodejs
+    - role: postgresql
